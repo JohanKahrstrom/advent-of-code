@@ -17,6 +17,7 @@ def part_one():
 
     print(f'Part 1: {out}')
 
+
 def find_numbers(string):
     mapping = {
         '0': '0',
