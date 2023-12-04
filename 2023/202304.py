@@ -1,73 +1,93 @@
-import re
+from collections import deque
+
+import numpy as np
 
 from aoc import read_lines
 
 
-def get_engine():
-    return read_lines('202303.txt')
+def read_cards():
+    lines = read_lines('202304.txt')
+    result = []
+
+    for line in lines:
+        card_number = int(line.split(':')[0].split(' ')[-1])
+        winners = set([int(n) for n in line.split(':')[1].split('|')[0].split(' ') if n != ''])
+        yours = set([int(n) for n in line.split(':')[1].split('|')[1].split(' ') if n != ''])
+
+        result.append((card_number-1, winners, yours))
+
+    return result
 
 
-def get_numbers_map(engine):
-    numbers_map = {}
-
-    for x, line in enumerate(engine):
-        i = re.finditer(r'([0-9]+)', line)
-
-        for match in i:
-            number = int(match.group(0))
-            y_start = match.span()[0]
-            for y in range(match.span()[0], match.span()[1]):
-                # We save the coordinate along with the number, to be able to differentiate later
-                numbers_map[(x, y)] = (x, y_start, number)
-
-    return numbers_map
+def get_matches(card: (int, set[int], set[int])):
+    card_number, winners, yours = card
+    return len([n for n in yours if n in winners])
 
 
-def get_numbers(x, numbers_map, match):
-    numbers = set()
-
-    y = match.span()[0]
-    for tx in range(x - 1, x + 2):
-        for ty in range(y - 1, y + 2):
-            if (tx, ty) in numbers_map:
-                numbers.add(numbers_map.get((tx, ty)))
-
-    return numbers
+def get_score(n):
+    if n <= 0:
+        return 0
+    else:
+        return 2 ** (n - 1)
 
 
 def part_one():
-    engine = get_engine()
-    numbers_map = get_numbers_map(engine)
-    # Dictionary from coordinates to numbers they contain
+    cards = read_cards()
 
-    numbers = set()
+    total_score = 0
 
-    for x, line in enumerate(engine):
-        i = re.finditer(r'([^0-9.])', line)
+    for card in cards:
+        nr_matches = get_matches(card)
+        total_score += get_score(nr_matches)
 
-        for match in i:
-            numbers.update(get_numbers(x, numbers_map, match))
-
-    print(f'Part 1: {sum([n for _, _, n in numbers])}')
+    print(f'Part 1: {total_score}')
 
 
 def part_two():
-    engine = get_engine()
-    numbers_map = get_numbers_map(engine)
-    # Dictionary from coordinates to numbers they contain
+    cards = read_cards()
+    q = deque(cards)
 
-    gear_ratios = 0
+    nr_cards = 0
+    while len(q) > 0:
+        nr_cards += 1
+        card = q.popleft()
 
-    for x, line in enumerate(engine):
-        i = re.finditer(r'\*', line)
+        card_number, _, _ = card
+        matches = get_matches(card)
+        for i in range(card_number + 1, card_number + 1 + matches):
+            q.append(cards[i])
 
-        for match in i:
-            numbers = [n for _, _, n in get_numbers(x, numbers_map, match)]
-            if len(numbers) == 2:
-                gear_ratios += numbers[0] * numbers[1]
+    print(f'Part 2: {nr_cards}')
 
-    print(f'Part 2: {gear_ratios}')
 
+def get_card_vectors(cards):
+    dim = max([card_number for card_number, _, _ in cards]) + 1
+
+    # Initially we have one of each card
+    card_counts = np.ones(dim, dtype=int)
+
+    # A card vector is a vector of how many cards of each number to add
+    # for each card
+    card_vectors = []
+    for card in cards:
+        card_vector = np.zeros(dim, dtype=int)
+        card_number, _, _ = card
+        matches = get_matches(card)
+        for i in range(card_number + 1, card_number + 1 + matches):
+            card_vector[i] = 1
+        card_vectors.append(card_vector)
+
+    return card_counts, card_vectors
+
+
+def part_two_v2():
+    cards = read_cards()
+    card_counts, card_vectors = get_card_vectors(cards)
+
+    for i in range(card_counts.shape[0]):
+        card_counts += card_counts[i] * card_vectors[i]
+
+    print(f'Part 2: {card_counts.sum()}')
 
 if __name__ == '__main__':
-    part_two()
+    part_two_v2()
