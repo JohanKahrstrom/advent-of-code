@@ -89,5 +89,6 @@ def part_two_v2():
 
     print(f'Part 2: {card_counts.sum()}')
 
+
 if __name__ == '__main__':
     part_two_v2()
