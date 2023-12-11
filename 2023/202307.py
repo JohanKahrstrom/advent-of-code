@@ -1,7 +1,5 @@
 from collections import Counter
 
-import numpy as np
-
 from aoc import read_lines
 
 
@@ -89,7 +87,6 @@ def find_best_hand(hand):
     })
 
     best_clean_string = hand_string.translate(high_map)
-
 
     return best_hand, best_clean_string, best_type, bid
 
