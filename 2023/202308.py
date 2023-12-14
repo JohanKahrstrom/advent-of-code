@@ -2,9 +2,7 @@ from itertools import cycle, count
 import re
 import math
 
-import numpy as np
-
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def read_map():

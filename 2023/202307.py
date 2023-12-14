@@ -1,6 +1,6 @@
 from collections import Counter
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def get_type(hand_string):

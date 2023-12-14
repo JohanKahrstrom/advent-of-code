@@ -1,6 +1,6 @@
 import re
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def get_engine():

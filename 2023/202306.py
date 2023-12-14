@@ -1,8 +1,6 @@
-from collections import deque
-
 import numpy as np
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def read_races():

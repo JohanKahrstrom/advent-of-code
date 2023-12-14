@@ -1,6 +1,6 @@
 import numpy as np
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 pattern_map = {

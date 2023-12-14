@@ -1,6 +1,4 @@
-from collections import deque
-
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def read_oasis():
