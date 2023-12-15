@@ -2,7 +2,7 @@ from itertools import chain, combinations
 
 import networkx as nx
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def read_fuel_requirements():

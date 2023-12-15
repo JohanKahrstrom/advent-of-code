@@ -2,7 +2,7 @@ from collections import deque
 
 import numpy as np
 
-from aoc import read_file
+from utils.aoc import read_file
 
 
 def read_maze(filename):

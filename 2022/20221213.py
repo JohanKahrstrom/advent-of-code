@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 
-from aoc import read_file
+from utils.aoc import read_file
 
 
 def read_packet_pairs(text):

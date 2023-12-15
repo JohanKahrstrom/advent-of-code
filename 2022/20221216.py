@@ -2,11 +2,11 @@ from itertools import chain, combinations
 
 import networkx as nx
 
-from aoc import read_lines
+from utils.aoc import read_lines
 
 
 def read_valves():
-    lines = read_lines('20221216.txt')
+    lines = read_lines('20221216_test.txt')
 
     valve_map = dict()
     tunnel_map = dict()
